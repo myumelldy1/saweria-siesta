@@ -14,6 +14,12 @@ export default async function handler(req, res) {
     console.log("=== SAWERIA PAYLOAD ===");
     console.log(JSON.stringify(req.body, null, 2));
 
+    if (req.body.type !== "donation") {
+    return res.status(200).json({
+        ignored: true
+    });
+}
+
     try {
 
         const donor = req.body.donator_name || "Anonymous";
