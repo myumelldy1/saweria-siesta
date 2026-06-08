@@ -55,11 +55,12 @@ if (!file.content) {
         );
 
         donations.unshift({
-            donor,
-            amount,
-            message,
-            timestamp: Date.now()
-        });
+    id: req.body.id,
+    donor,
+    amount,
+    message,
+    timestamp: Date.now()
+});
 
         const updatedContent = Buffer.from(
             JSON.stringify(donations, null, 2)
