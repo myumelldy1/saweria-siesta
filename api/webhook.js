@@ -24,7 +24,13 @@ export default async function handler(req, res) {
 
         const donor = req.body.donator_name || "Anonymous";
         const amount = req.body.amount_raw || 0;
-        const message = req.body.message || "";
+
+        const rawMessage = req.body.message || "";
+
+        const parts = rawMessage.trim().split(/\s+/);
+
+        const linkCode = parts[0] || "";
+        const cleanMessage = parts.slice(1).join(" ");
 
         // Ambil links.json
 const linksResponse = await fetch(
@@ -48,10 +54,12 @@ const links = JSON.parse(
 
 // Cari kode yang dikirim di pesan donasi
 const linkedPlayer = links.find(
-    x => x.code === message.trim()
+    x => x.code === linkCode
 );
         
-console.log("MESSAGE:", message);
+console.log("RAW MESSAGE:", rawMessage);
+console.log("LINK CODE:", linkCode);
+console.log("CLEAN MESSAGE:", cleanMessage);
 console.log("LINKED PLAYER:", linkedPlayer);
 
         
@@ -84,22 +92,23 @@ if (!file.content) {
         );
 
         donations.unshift({
-    id: req.body.id,
+            id: req.body.id,
 
-    donor,
-    amount,
-    message,
+            donor,
+            amount,
 
-    robloxUserId: linkedPlayer
-        ? linkedPlayer.userId
-        : null,
+            message: cleanMessage,
 
-    robloxUsername: linkedPlayer
-        ? linkedPlayer.username
-        : null,
+            robloxUserId: linkedPlayer
+                ? linkedPlayer.userId
+                : null,
 
-    timestamp: Date.now()
-});
+            robloxUsername: linkedPlayer
+                ? linkedPlayer.username
+                : null,
+
+            timestamp: Date.now()
+        });
 
         const updatedContent = Buffer.from(
             JSON.stringify(donations, null, 2)
