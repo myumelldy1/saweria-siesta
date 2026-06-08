@@ -20,7 +20,11 @@ export default async function handler(req, res) {
         .toString("utf8")
     );
 
-    res.status(200).json(
-        donations[0] || {}
+    res.status(200).json({
+    donator: latest.donor,
+    amount: latest.amount,
+    message: latest.message,
+    timestamp: latest.timestamp
+});
     );
 }
