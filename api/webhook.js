@@ -10,6 +10,10 @@ export default async function handler(req, res) {
         });
     }
 
+    // TAMBAHKAN DI SINI
+    console.log("=== SAWERIA PAYLOAD ===");
+    console.log(JSON.stringify(req.body, null, 2));
+
     try {
 
         const donor = req.body.donator || "Anonymous";
@@ -67,6 +71,8 @@ export default async function handler(req, res) {
         });
 
     } catch (err) {
+
+        console.error(err);
 
         res.status(500).json({
             error: err.message
