@@ -38,6 +38,15 @@ export default async function handler(req, res) {
 
         const file = await fileResponse.json();
 
+console.log("GitHub Response:", file);
+
+if (!file.content) {
+    return res.status(500).json({
+        error: "donations.json tidak ditemukan",
+        github: file
+    });
+}
+
         const donations = JSON.parse(
             Buffer.from(
                 file.content,
