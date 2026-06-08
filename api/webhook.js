@@ -16,8 +16,8 @@ export default async function handler(req, res) {
 
     try {
 
-        const donor = req.body.donator || "Anonymous";
-        const amount = req.body.amount || 0;
+        const donor = req.body.donator_name || "Anonymous";
+        const amount = req.body.amount_raw || 0;
         const message = req.body.message || "";
 
         const fileResponse = await fetch(
