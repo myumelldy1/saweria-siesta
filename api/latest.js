@@ -26,5 +26,4 @@ export default async function handler(req, res) {
     message: latest.message,
     timestamp: latest.timestamp
 });
-    );
 }
