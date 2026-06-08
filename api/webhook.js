@@ -26,6 +26,35 @@ export default async function handler(req, res) {
         const amount = req.body.amount_raw || 0;
         const message = req.body.message || "";
 
+        // Ambil links.json
+const linksResponse = await fetch(
+    `https://api.github.com/repos/${OWNER}/${REPO}/contents/data/links.json`,
+    {
+        headers: {
+            Authorization: `Bearer ${GITHUB_TOKEN}`,
+            Accept: "application/vnd.github+json"
+        }
+    }
+);
+
+const linksFile = await linksResponse.json();
+
+const links = JSON.parse(
+    Buffer.from(
+        linksFile.content,
+        "base64"
+    ).toString("utf8")
+);
+
+// Cari kode yang dikirim di pesan donasi
+const linkedPlayer = links.find(
+    x => x.code === message.trim()
+);
+        
+console.log("MESSAGE:", message);
+console.log("LINKED PLAYER:", linkedPlayer);
+
+        
         const fileResponse = await fetch(
             `https://api.github.com/repos/${OWNER}/${REPO}/contents/data/donations.json`,
             {
@@ -56,9 +85,19 @@ if (!file.content) {
 
         donations.unshift({
     id: req.body.id,
+
     donor,
     amount,
     message,
+
+    robloxUserId: linkedPlayer
+        ? linkedPlayer.userId
+        : null,
+
+    robloxUsername: linkedPlayer
+        ? linkedPlayer.username
+        : null,
+
     timestamp: Date.now()
 });
 
