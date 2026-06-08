@@ -33,11 +33,11 @@ export default async function handler(req, res) {
     });
 
     const sorted = Object.entries(leaderboard)
-        .map(([name, total]) => ({
-            name,
-            total
-        }))
-        .sort((a, b) => b.total - a.total);
+    .map(([name, total]) => ({
+        member: name,
+        score: total
+    }))
+    .sort((a, b) => b.score - a.score);
 
     res.status(200).json(sorted);
 }
