@@ -37,12 +37,12 @@ export default async function handler(req, res) {
         }
 
         return res.status(200).json({
-            donator: latest.donor,
-            amount: latest.amount,
-            message: latest.message,
-            timestamp: latest.timestamp
-        });
-
+    id: latest.id,
+    donator: latest.donor,
+    amount: latest.amount,
+    message: latest.message,
+    timestamp: latest.timestamp
+});
     } catch (err) {
 
         return res.status(500).json({
